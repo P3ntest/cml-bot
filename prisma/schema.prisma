@@ -1,0 +1,28 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./db/bot.db"
+}
+
+model Break {
+  id String @id @default(cuid())
+
+  members BreakMember[]
+}
+
+model BreakMember {
+  break   Break  @relation(fields: [breakId], references: [id], onDelete: Cascade)
+  breakId String
+
+  userId String
+
+  ready Boolean @default(false)
+
+  @@unique([breakId, userId])
+}
